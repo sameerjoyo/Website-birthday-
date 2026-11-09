@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a0f1c">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Happy Birthday, Fateem</title>
+  <meta name="description" content="A little universe made only for you.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐞</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="locked">
+
+  <!-- Floating petals behind everything -->
+  <canvas id="petals" aria-hidden="true"></canvas>
+  <!-- Confetti / hearts layer on top -->
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <!-- ============ LOCK SCREEN (only if lockUntilBirthday = true) ============ -->
+  <section id="lock" class="screen" hidden>
+    <div class="lock-inner">
+      <div class="lock-bug">🐞</div>
+      <p class="eyebrow">Something special is waiting</p>
+      <h1 class="script">Not yet, Fateem…</h1>
+      <p class="lock-sub">Your surprise unlocks on your birthday. Be patient, ladybug 🤍</p>
+      <div class="countdown" id="lockCountdown"></div>
+    </div>
+  </section>
+
+  <!-- ===================== INTRO: BLOW OUT THE CANDLES ===================== -->
+  <section id="intro" class="screen" aria-label="Blow out your candles">
+    <div class="intro-glow"></div>
+    <div class="intro-inner">
+      <p class="eyebrow intro-eyebrow">For Fateem · 25.12</p>
+      <h1 class="script intro-title" id="introTitle">Make a wish</h1>
+      <p class="intro-hint" id="introHint"></p>
+
+      <div class="cake-wrap">
+        <div class="candles">
+          <button class="candle" data-i="0" aria-label="Blow out candle 2">
+            <span class="flame"><span class="flame-inner"></span></span>
+            <span class="smoke"></span>
+            <span class="wick"></span>
+            <span class="num">2</span>
+          </button>
+          <button class="candle" data-i="1" aria-label="Blow out candle 5">
+            <span class="flame"><span class="flame-inner"></span></span>
+            <span class="smoke"></span>
+            <span class="wick"></span>
+            <span class="num">5</span>
+          </button>
+        </div>
+        <div class="cake">
+          <div class="tier tier-top"><span class="drip"></span></div>
+          <div class="tier tier-mid"><span class="drip"></span><span class="pearls"></span></div>
+          <div class="tier tier-bottom"><span class="drip"></span><span class="cake-name">Fateem</span></div>
+          <div class="plate"></div>
+        </div>
+      </div>
+
+      <div class="intro-actions">
+        <button class="btn btn-ghost" id="micBtn">🎤 Blow with mic</button>
+      </div>
+      <div class="intro-after" id="introAfter">
+        <p class="intro-after-line" id="introAfterLine"></p>
+        <button class="btn btn-primary" id="enterBtn">Open your gift 🎁</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ TOP CONTROLS ============================= -->
+  <button class="fab fab-menu" id="menuBtn" aria-label="Open chapters" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <button class="fab fab-music" id="musicBtn" aria-label="Play or pause our song" hidden>
+    <span class="bars"><i></i><i></i><i></i><i></i></span>
+  </button>
+  <nav class="drawer" id="drawer" aria-label="Chapters">
+    <p class="drawer-title script">Your Chapters</p>
+    <ol id="drawerList"></ol>
+  </nav>
+  <audio id="song" loop preload="auto"></audio>
+
+  <!-- ================================ SITE ================================= -->
+  <main id="site" hidden>
+
+    <!-- HERO -->
+    <header class="hero" id="home">
+      <div class="hero-orbs"><span></span><span></span><span></span></div>
+      <div class="hero-inner">
+        <p class="eyebrow reveal" id="heroEyebrow"></p>
+        <h1 class="hero-title reveal"><span class="script" id="heroTitle"></span><span class="hero-name" id="heroName"></span></h1>
+        <p class="hero-sub reveal" id="heroSub"></p>
+        <div class="hero-counter reveal">
+          <p class="mini-label" id="countdownLabel">Counting down to your day</p>
+          <div class="countdown" id="countdown"></div>
+        </div>
+        <p class="scroll-hint reveal" id="scrollHint"></p>
+        <div class="scroll-arrow" aria-hidden="true"></div>
+      </div>
+      <button class="ladybug" data-secret="0" style="right:8%;top:16%" aria-label="A little ladybug">🐞</button>
+    </header>
+
+    <!-- DAYS TOGETHER -->
+    <section class="section" id="together">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 01</p>
+        <h2 class="script">Every Second With You</h2>
+        <p class="lead">Since February 2024, my heart has been counting…</p>
+      </div>
+      <div class="together-grid reveal" id="togetherGrid"></div>
+      <p class="together-foot reveal">…and I want to keep counting forever.</p>
+    </section>
+
+    <!-- OUR STORY -->
+    <section class="section section-soft" id="story">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 02</p>
+        <h2 class="script">Our Story</h2>
+        <p class="lead">From "just normal" to "my whole world".</p>
+      </div>
+      <ol class="timeline" id="timeline"></ol>
+    </section>
+
+    <!-- LOVE LETTER -->
+    <section class="section" id="letter">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 03</p>
+        <h2 class="script">A Letter For You</h2>
+        <p class="lead">Tap the seal, my love.</p>
+      </div>
+      <div class="envelope-stage reveal">
+        <button class="envelope" id="envelope" aria-label="Open the love letter">
+          <span class="env-back"></span>
+          <span class="env-paper"><span class="script">For Fateem</span></span>
+          <span class="env-front"></span>
+          <span class="env-flap"></span>
+          <span class="env-seal">S<small>♥</small>F</span>
+        </button>
+      </div>
+      <article class="paper" id="paper" hidden>
+        <button class="skip" id="skipType">Show all ✨</button>
+        <p class="paper-greeting script" id="letterGreeting"></p>
+        <div class="paper-body" id="letterBody"></div>
+        <div class="paper-sign" id="letterSign">
+          <p id="letterSignoff"></p>
+          <p class="script" id="letterSignature"></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- WHY YOU'RE SO RARE -->
+    <section class="section section-wine" id="rare">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 04</p>
+        <h2 class="script">Why You're So Rare</h2>
+        <p class="lead">There is only one of you in this entire universe.</p>
+      </div>
+      <div class="rare-list" id="rareList"></div>
+    </section>
+
+    <!-- 25 REASONS -->
+    <section class="section section-soft" id="reasons">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 05</p>
+        <h2 class="script">25 Reasons I Love You</h2>
+        <p class="lead">One for every beautiful year of you. Pick a note from the jar.</p>
+      </div>
+      <div class="jar-stage reveal">
+        <div class="jar" id="jar" aria-hidden="true">
+          <div class="jar-lid"></div>
+          <div class="jar-body"><div class="jar-notes" id="jarNotes"></div><div class="jar-shine"></div></div>
+          <div class="jar-label script">reasons</div>
+        </div>
+        <div class="reason-card" id="reasonCard" aria-live="polite">
+          <span class="reason-num" id="reasonNum"></span>
+          <p id="reasonText">Every note in this jar is a piece of my heart.</p>
+        </div>
+        <div class="row-btns">
+          <button class="btn btn-primary" id="pickReason">Pick a note 💌</button>
+          <button class="btn btn-ghost" id="allReasons">See all</button>
+        </div>
+        <ol class="reasons-all" id="reasonsAll" hidden></ol>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="section" id="gallery">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 06</p>
+        <h2 class="script">Us, In Pictures</h2>
+        <p class="lead">Tap any photo to hold it a little closer.</p>
+      </div>
+      <div class="polaroids" id="polaroids"></div>
+    </section>
+
+    <!-- STAR SKY -->
+    <section class="section section-night" id="sky">
+      <canvas class="sky-canvas" id="skyCanvas" aria-hidden="true"></canvas>
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 07</p>
+        <h2 class="script">Our Little Sky</h2>
+        <p class="lead">Every glowing star is one of our memories. Open them all…</p>
+      </div>
+      <div class="constellation reveal" id="constellation">
+        <svg class="const-lines" id="constLines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+      </div>
+      <p class="sky-progress" id="skyProgress"></p>
+      <p class="sky-complete script" id="skyComplete"></p>
+    </section>
+
+    <!-- OPEN WHEN -->
+    <section class="section section-soft" id="openwhen">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 08</p>
+        <h2 class="script">Open When…</h2>
+        <p class="lead">Little letters for every mood. Come back to them whenever you need me.</p>
+      </div>
+      <div class="ow-grid" id="owGrid"></div>
+    </section>
+
+    <!-- SCRATCH CARDS -->
+    <section class="section" id="scratch">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 09</p>
+        <h2 class="script">Scratch & Smile</h2>
+        <p class="lead">Use your finger to scratch the gold away.</p>
+      </div>
+      <div class="scratch-grid" id="scratchGrid"></div>
+    </section>
+
+    <!-- COUPONS -->
+    <section class="section section-soft" id="coupons">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 10</p>
+        <h2 class="script">Love Coupons</h2>
+        <p class="lead">Valid forever. Redeemable only by Fateem.</p>
+      </div>
+      <div class="coupon-list" id="couponList"></div>
+      <p class="coupon-note reveal" id="couponNote"></p>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="section" id="quiz">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 11</p>
+        <h2 class="script">How Well Do You Know Us?</h2>
+        <p class="lead">A little quiz, ladybug. No cheating!</p>
+      </div>
+      <div class="quiz-card reveal" id="quizCard"></div>
+    </section>
+
+    <!-- FUTURE -->
+    <section class="section section-wine" id="future">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 12</p>
+        <h2 class="script">Our Forever List</h2>
+        <p class="lead">Dreams we will tick off together, inshAllah.</p>
+      </div>
+      <ul class="dreams" id="dreams"></ul>
+    </section>
+
+    <!-- WISHES -->
+    <section class="section section-soft" id="wishes">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 13</p>
+        <h2 class="script">Wishes For You</h2>
+        <p class="lead">From the people who love you.</p>
+      </div>
+      <div class="wish-wall" id="wishWall"></div>
+    </section>
+
+    <!-- NOTES -->
+    <section class="section" id="notes">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 14</p>
+        <h2 class="script">Little Notes</h2>
+        <p class="lead">Things I remember, things I feel — I'll keep adding them for you.</p>
+      </div>
+      <div class="notes" id="notesList"></div>
+    </section>
+
+    <!-- LANTERN WISH -->
+    <section class="section section-night section-lantern" id="lantern">
+      <div class="section-head reveal">
+        <p class="eyebrow">Chapter 15</p>
+        <h2 class="script">Send Your Wish</h2>
+        <p class="lead">Write your birthday wish and let it fly up to the sky.</p>
+      </div>
+      <div class="lantern-sky" id="lanternSky" aria-live="polite"></div>
+      <form class="lantern-form reveal" id="lanternForm" autocomplete="off">
+        <input type="text" id="lanternInput" maxlength="80" placeholder="I wish…" aria-label="Your wish">
+        <button class="btn btn-primary" type="submit">Release 🏮</button>
+      </form>
+    </section>
+
+    <!-- FINALE -->
+    <section class="finale" id="finale">
+      <canvas id="fireworks" aria-hidden="true"></canvas>
+      <div class="finale-inner">
+        <p class="eyebrow reveal">The Last Page</p>
+        <h2 class="script finale-title reveal" id="finaleTitle"></h2>
+        <p class="finale-text reveal" id="finaleText"></p>
+        <div class="video-frame reveal" id="videoFrame"></div>
+        <p class="finale-sign script reveal" id="finaleSign"></p>
+        <div class="row-btns reveal">
+          <button class="btn btn-primary" id="hugBtn">Send Beb a hug 🤗</button>
+          <button class="btn btn-ghost light" id="againBtn">Blow the candles again 🎂</button>
+        </div>
+      </div>
+      <button class="ladybug" data-secret="2" style="right:10%;bottom:6%" aria-label="A little ladybug">🐞</button>
+    </section>
+
+    <footer class="footer">
+      <p>Made with all my heart, only for Fateem · 25.12.2026</p>
+    </footer>
+  </main>
+
+  <!-- Modal (letters, stars, photos, secrets) -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-x" data-close aria-label="Close">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="js/content.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
